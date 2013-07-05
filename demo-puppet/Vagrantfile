@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  
+	config.vm.box = "precise32"
+	config.vm.box_url = "D:\\Somkiat\\training\\geeky\\vagrant+puppet\\precise32.box"
+
+	config.vm.network :hostonly, "33.33.33.10"
+
+	config.vm.customize [
+		"modifyvm", :id,
+		"--name", "geeky-academy-01",
+		"--memory", "512",
+	]
+
+	config.vm.provision :puppet do |puppet|
+		puppet.manifests_path = "puppet/manifests"
+		puppet.manifest_file = "default.pp"
+		puppet.module_path = "puppet/modules"
+  	end
+
+
+end
