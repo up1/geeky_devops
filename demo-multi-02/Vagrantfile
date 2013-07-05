@@ -1,0 +1,28 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+nodes = {
+    'web'  => [2, 10],
+    'db'   => [1, 20],
+}
+
+Vagrant::Config.run do |config|
+    config.vm.box = "geeky-academy-multi-02"
+    config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+    nodes.each do |prefix, (count, ip_start)|
+        count.times do |i|
+            hostname = "%s-%02d" % [prefix, (i+1)]
+
+            config.vm.define "#{hostname}" do |box|
+                box.vm.host_name = "#{hostname}.vagrant.internal"
+                box.vm.network :hostonly, "33.33.33.#{ip_start+i}", :netmask => "255.255.255.0"
+                box.vm.customize [
+                    "modifyvm", :id,
+                    "--name", hostname,
+                    "--memory", "512",
+                ]
+            end
+        end
+    end
+end
