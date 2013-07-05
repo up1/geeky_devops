@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+
+  config.vm.box = "geeky-academy"
+  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+  config.vm.define :web do |web_config|
+    web_config.vm.host_name = "web01.internal"
+    web_config.vm.network :hostonly, "192.168.0.100"
+    
+    #web_config.vm.forward_port 22, 2222
+    #web_config.vm.customize ["modifyvm", :id, "--memory", 512]
+  end
+
+  config.vm.define :db do |db_config|
+    db_config.vm.host_name = "db01.internal"    
+    db_config.vm.network :hostonly, "192.168.0.101"
+
+    #db_config.vm.forward_port 22, 2223
+    #db_config.vm.customize ["modifyvm", :id, "--memory", 512]
+  end
+end
